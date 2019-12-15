@@ -52,13 +52,20 @@ const useLogin = () => {
     } catch (error) {}
     return false;
   };
+  const getCredentials = () => {
+    return {
+      email: cookies["email"],
+      uid: cookies["uid"],
+      token: cookies["token"]
+    };
+  };
   const logout = () => {
     removeCookie("name");
     removeCookie("token");
     removeCookie("uid");
     removeCookie("email");
   };
-  return { redirectToDopeAuth, login, logout };
+  return { redirectToDopeAuth, getCredentials, login, logout };
 };
 
 export default useLogin;
