@@ -1,0 +1,28 @@
+{
+  "name": "TechX React Flask Template",
+  "description": "A simple interface for anything!",
+  "repository": "https://github.com/techx/react-flask-template",
+  "keywords": [],
+  "addons": [
+    {
+      "plan": "heroku-postgresql",
+      "options": {
+        "version": "9.5"
+      }
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    },
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "REACT_APP_SITEURL": {
+      "description": "URL of site (usually https://[appname].herokuapp.com) YOU NEED https or http",
+      "value": "https://[appname].herokuapp.com"
+    }
+  }
+}

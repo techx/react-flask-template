@@ -1,6 +1,7 @@
 from flask import Blueprint, request, Response
 from flask_restful import Api, Resource, reqparse
 from server.app import app
+from server.api.v1 import api_login
 import json
 
 # NOTE: all the following resources by default start with '/api/v1' so there's
@@ -20,3 +21,6 @@ api = Api(Blueprint('api', __name__))
 
 # Endpoint registration
 api.add_resource(HelloWorld, '')  # This would be the default hostname/api/v1
+
+# Login
+api.add_resource(api_login.ClientLogin, '/client/login')

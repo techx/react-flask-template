@@ -1,45 +1,36 @@
-import requests
-from server.app import app
-import datetime
+from server.controllers.dopeauth import authenticate_with_dopeauth
+from server.app import db
+from server.models.user import User
+from server.models.client import Client
 
-DOPEAUTH_CACHE_STRICT = {}
-DOPEAUTH_CACHE = {}
 
-def authenticateWithDopeAuth(email, uid, token, strictAuth=True):
+def authenticate_firsttime(email, uid, token):
     """
-    StrictAuth also checks callback url for another layer of security.
-    Caches keys so we don't call the server so many times
+    Authenticates the code first time!
 
-    Returns true or false!
+    returns client or None
     """
-    global DOPEAUTH_CACHE
-    global DOPEAUTH_CACHE_STRICT
+    # TODO(kevinfang): FALSE authentication should be TRUE unless in debug
+    if(authenticate_with_dopeauth(email, uid, token, True)):
+        user = User.query.filter_by(email=email).first()
+        if user is None:
+            user = User(email)
+            db.session.add(user)
+        client = Client(user)
+        db.session.add(client)
+        db.session.commit()
+        return client
+    return None
 
-    if (not strictAuth and uid + "___" + token in DOPEAUTH_CACHE):
-        return email == DOPEAUTH_CACHE[uid + "___" + token]
-    if (strictAuth and uid + "___" + token in DOPEAUTH_CACHE_STRICT):
-        return email == DOPEAUTH_CACHE_STRICT[uid + "___" + token]
 
-    if(strictAuth):
-        PARAMS = {
-            "email": email,
-            "uid": uid,
-            "token": token,
-            "callback": app.config["REACT_APP_CALLBACKURL"]
-        }
-    else:
-        PARAMS = {
-            "email": email,
-            "uid": uid,
-            "token": token
-        }
-
-    r = requests.post(
-        url="https://dopeauth.com/api/v1/site/verify", params=PARAMS)
-    data = r.json()
-    success = "success" in data and data["success"]
-    if (success):
-        if(strictAuth):
-            DOPEAUTH_CACHE_STRICT[uid + "___" + token] = email
-        DOPEAUTH_CACHE[uid + "___" + token] = email
-    return success
+def authenticate(uid, token):
+    """
+    Authenticates with email and reddlinks token
+    returns (True or False, user)
+    """
+    # TODO(kevinfang): make client uid unique
+    client = Client.query.filter_by(uid=uid, token=token).first()
+    if (client is not None):
+        # Yay client confirmed!
+        return True, client.user
+    return False, None

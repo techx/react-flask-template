@@ -1,6 +1,8 @@
-# from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from flask_dotenv import DotEnv
+
+import os
 
 print("Initializing Backend")
 app = Flask(__name__, static_folder='build')
@@ -8,12 +10,15 @@ app = Flask(__name__, static_folder='build')
 env = DotEnv(app)
 env.init_app(app, env_file="./.env", verbose_mode=True)
 
-# Database (uncomment if needed)
-# db = SQLAlchemy(app)
-
 # For heroku launching
-if "DATABASE_URL" in app.config:
-    app.config["SQLALCHEMY_DATABASE_URI"] = app.config["DATABASE_URL"]
+if "DATABASE_URL" in os.environ:
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
+
+if "REACT_APP_SITEURL" in os.environ:
+    app.config["REACT_APP_SITEURL"] = os.environ["REACT_APP_SITEURL"]
+    
+# Database
+db = SQLAlchemy(app)
 
 if app.config["DEBUG"]:
     app.debug = True

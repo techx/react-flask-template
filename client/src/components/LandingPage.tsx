@@ -7,9 +7,8 @@ const LandingPage = () => {
   return (
     <Container>
       <h1>{process.env.REACT_APP_NAME}</h1>
-      <p> by: HackMIT</p>
 
-      <Button onClick={redirectToDopeAuth} color="primary">
+      <Button onClick={() => redirectToDopeAuth()} color="primary">
         Login with DopeAuth
       </Button>
     </Container>

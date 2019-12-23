@@ -22,7 +22,7 @@ const AppHeader: React.FC = () => {
   const viewerButton = isLoggedIn ? (
     <UncontrolledDropdown nav inNavbar>
       <DropdownToggle nav caret>
-        Hello {viewer(Query.name)}
+        Hello {viewer(Query.email)}
       </DropdownToggle>
       <DropdownMenu right>
         <DropdownItem onClick={logout}>Logout</DropdownItem>
@@ -30,7 +30,7 @@ const AppHeader: React.FC = () => {
     </UncontrolledDropdown>
   ) : (
     <NavItem>
-      <NavLink onClick={redirectToDopeAuth}>Login with DopeAuth</NavLink>
+      <NavLink onClick={() => redirectToDopeAuth()}>Login with DopeAuth</NavLink>
     </NavItem>
   );
   return (
