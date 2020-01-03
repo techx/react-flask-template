@@ -11,7 +11,7 @@ Created and maintained by: TheReddKing (TechX)
     pip install -r requirements.txt
     yarn
     cp .env.example .env
-    cd client && yarn
+    (cd client && yarn)
 
 Then edit your `.env` file. Once your database url is correct (you can use `createdb template` if you have postgres)
 
