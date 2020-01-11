@@ -5,7 +5,7 @@ export enum ServerURL {
 const ServerHelper = {
   post: async (
     url: ServerURL,
-    data: any,
+    data: any
   ): Promise<{ success: boolean; [key: string]: any }> => {
     try {
       const config = {
@@ -22,7 +22,7 @@ const ServerHelper = {
         return json;
       }
     } catch (error) {}
-    return { success: false };
+    return { success: false, error_code: -1 };
   }
 };
 

@@ -89,7 +89,17 @@ const useLogin = () => {
     removeCookie("uid");
     removeCookie("email");
   };
-  return { redirectToDopeAuth, getCredentials, login, logout };
+
+  const callAPI = async (url: ServerURL, data: any) => {
+    const res = await ServerHelper.post(url, { ...getCredentials(), ...data });
+    if (!res.success && res.error_code === 999) {
+      // Bad token
+      logout();
+    }
+    return res;
+  };
+
+  return { redirectToDopeAuth, getCredentials, login, logout, callAPI };
 };
 
 export default useLogin;
