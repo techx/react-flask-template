@@ -16,6 +16,9 @@ def authenticate_firsttime(email, uid, token):
         user = User.query.filter_by(email=email).first()
         if user is None:
             user = User(email)
+        else:
+            user.sign_in()
+
         client = Client(user)
         if (add_to_db(client, others=[user], rollbackfunc=lambda:client.generate_uniques())):
             return client
