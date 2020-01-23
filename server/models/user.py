@@ -22,5 +22,5 @@ class User(Base):
         self.email = email
 
     def sign_in(self):
-        self.date_last_signin = datetime.datetime.now
+        self.date_last_signin = datetime.datetime.now()
         update_db()
